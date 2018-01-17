@@ -16,6 +16,7 @@ using namespace std;
 #include "BirthdayIndex.h"
 
 
+
 template <class Key, class T> class hash_map : public std::unordered_map<Key, T> {};
 
 enum calculation_method { LINKFIND, COMPUTEPAIRS};
@@ -43,48 +44,6 @@ public:
 
 	double getDeath(){
 		return death;
-	}
-	
-};
-
-struct BirthdayIndexComparator
-{
-	
-	bool operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const{
-		if(o1.birthday == o2.birthday){
-			if(o1.index < o2.index){
-				return true;
-			} else{
-				return false;
-			}
-		} else {
-			if(o1.birthday > o2.birthday){
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
-	
-};
-
-struct BirthdayIndexInverseComparator
-{
-	
-	bool operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const{
-		if(o1.birthday == o2.birthday){
-			if(o1.index < o2.index){
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			if(o1.birthday > o2.birthday){
-				return false;
-			} else {
-				return true;
-			}
-		}
 	}
 	
 };

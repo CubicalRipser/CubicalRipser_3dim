@@ -40,3 +40,36 @@ using namespace std;
 		cout << "birthday : (m, z, y, x) = " << birthday << " : (" << pm << ", " << pz << ", " << py << ", " << px << ")" << endl; 
 	}
 	
+	bool BirthdayIndexComparator::operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const{
+		if(o1.birthday == o2.birthday){
+			if(o1.index < o2.index){
+				return true;
+			} else{
+				return false;
+			}
+		} else {
+			if(o1.birthday > o2.birthday){
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+ 	
+	bool BirthdayIndexInverseComparator::operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const{
+		if(o1.birthday == o2.birthday){
+			if(o1.index < o2.index){
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			if(o1.birthday > o2.birthday){
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+	

@@ -18,5 +18,14 @@ public:
 	void print();
 
 	void VertexPrint();
-	
+};
+
+struct BirthdayIndexComparator
+{
+	bool operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const; 
+};
+
+struct BirthdayIndexInverseComparator
+{
+	bool operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const;	
 };
