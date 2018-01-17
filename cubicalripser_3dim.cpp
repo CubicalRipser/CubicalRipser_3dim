@@ -12,10 +12,7 @@
 
 using namespace std;
 
-#include "DenseCubicalGrids.h"
-#include "BirthdayIndex.h"
-
-
+#include "ColumnsToReduce.h"
 
 template <class Key, class T> class hash_map : public std::unordered_map<Key, T> {};
 
@@ -46,43 +43,6 @@ public:
 		return death;
 	}
 	
-};
-
-class ColumnsToReduce{
-public:
-
-	vector<BirthdayIndex> columns_to_reduce;
-	int dim;
-	int max_of_index;
-
-	ColumnsToReduce(DenseCubicalGrids* _dcg) { 
-		dim = 0;
-		int ax = _dcg->ax;
-		int ay = _dcg->ay;
-		int az = _dcg->az;
-		max_of_index = 512*512*(az + 2);
-		int index;
-		double birthday;
-		
-		// link_findのときは不要かも...
-		for(int z = az; z > 0; --z){
-			for (int y = ay; y > 0; --y) {
-				for (int x = ax; x > 0; --x) {
-					birthday = _dcg->dense3[x][y][z];
-					index = x | (y << 9) | (z << 18);
-					if (birthday != _dcg->threshold) {
-						columns_to_reduce.push_back(BirthdayIndex(birthday, index, 0));
-					}
-				}
-			}
-		}
-		sort(columns_to_reduce.rbegin(), columns_to_reduce.rend(), BirthdayIndexInverseComparator());
-	}
-
-	int size() {
-		return columns_to_reduce.size();
-	}
-
 };
 
 
