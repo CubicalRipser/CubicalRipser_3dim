@@ -1,6 +1,6 @@
 TARGET = CR3
-SRCS = CubicalRipser_3dim.cpp DenseCubicalGrids.cpp Coeff.cpp Vertices.cpp
-OBJS = CubicalRipser_3dim.o DenseCubicalGrids.o Coeff.o Vertices.o
+SRCS = CubicalRipser_3dim.cpp DenseCubicalGrids.cpp Coeff.cpp Vertices.cpp BirthdayIndex.cpp
+OBJS = CubicalRipser_3dim.o DenseCubicalGrids.o Coeff.o Vertices.o BirthdayIndex.o
 
 all: $(TARGET)
 
@@ -17,4 +17,7 @@ Coeff.o: Coeff.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
 Vertices.o: Vertices.cpp
+	c++ -std=c++11 -c -o $@ $< -Ofast
+
+BirthdayIndex.o: BirthdayIndex.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast

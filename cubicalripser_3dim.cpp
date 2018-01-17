@@ -13,12 +13,12 @@
 using namespace std;
 
 #include "DenseCubicalGrids.h"
+#include "BirthdayIndex.h"
 
 
 template <class Key, class T> class hash_map : public std::unordered_map<Key, T> {};
 
 enum calculation_method { LINKFIND, COMPUTEPAIRS};
-
 
 class Writepairs
 {
@@ -43,52 +43,6 @@ public:
 
 	double getDeath(){
 		return death;
-	}
-	
-};
-
-class BirthdayIndex
-{
-	
-public:
-	double birthday;
-	int index;
-	int dim;
-	BirthdayIndex(double _b, int _i, int _d){
-		birthday = _b;
-		index = _i;
-		dim = _d;
-	}
-
-	void copyBirthdayIndex(BirthdayIndex* v){
-		birthday = v->birthday;
-		index = v->index;
-		dim = v->dim;
-	}
-
-	double getBirthday(){
-		return birthday;
-	}
-
-	long getIndex(){
-		return index;
-	}
-
-	int getDimension(){
-		return dim;
-	}
-
-	void print(){
-		std::cout << "(dob:" << birthday << "," << index << ")" << std::endl;
-	}
-
-	void VertexPrint(){
-		int px = index & 0x01ff;
-		int py = (index >> 9) & 0x01ff;
-		int pz = (index >> 18) & 0x01ff;
-		int pm = (index >> 27) & 0xff;
-	
-		cout << "birthday : (m, z, y, x) = " << birthday << " : (" << pm << ", " << pz << ", " << py << ", " << px << ")" << endl; 
 	}
 	
 };
