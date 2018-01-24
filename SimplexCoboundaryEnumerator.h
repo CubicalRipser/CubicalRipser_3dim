@@ -1,6 +1,4 @@
-//#include "BirthdayIndex.h"
-//#include "DenseCubicalGrids.h"
-#include "ColumnsToReduce.h"
+//#include "ColumnsToReduce.h"
 
 class SimplexCoboundaryEnumerator
 {

@@ -1,4 +1,8 @@
+#include <string>
+
 #include "Vertices.h"
+
+using namespace std;
 
 enum file_format { DIPHA, PERSEUS };
 

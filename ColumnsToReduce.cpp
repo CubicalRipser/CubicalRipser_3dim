@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <string>
 
+#include "BirthdayIndex.h"
+#include "DenseCubicalGrids.h"
 #include "ColumnsToReduce.h"
 
 using namespace std;

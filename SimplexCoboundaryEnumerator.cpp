@@ -7,6 +7,10 @@
 #include <string>
 #include <cstdint>
 
+
+#include "BirthdayIndex.h"
+#include "DenseCubicalGrids.h"
+#include "ColumnsToReduce.h"
 #include "SimplexCoboundaryEnumerator.h"
 
 using namespace std;

@@ -37,67 +37,16 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
+#include "BirthdayIndex.h"
+#include "DenseCubicalGrids.h"
+#include "ColumnsToReduce.h"
 #include "SimplexCoboundaryEnumerator.h"
+#include "Union_find.h"
 #include "Writepairs.h"
 
 template <class Key, class T> class hash_map : public std::unordered_map<Key, T> {};
 
 enum calculation_method { LINKFIND, COMPUTEPAIRS};
-
-
-class union_find{
-public:
-	int max_of_index;
-	vector<int> parent;
-	vector<double> birthtime;
-	vector<double> time_max;
-	DenseCubicalGrids* dcg;
-
-	union_find(int moi, DenseCubicalGrids* _dcg) : parent(moi), birthtime(moi), time_max(moi) { // Thie "n" is the number of cubes.
-		dcg = _dcg;
-		max_of_index = moi;
-
-		for(int i = 0; i < moi; ++i){
-			parent[i] = i;
-			birthtime[i] = dcg->getBirthday(i, 0);
-			time_max[i] = dcg->getBirthday(i, 0);
-		}
-	}
-
-	int find(int x){ // Thie "x" is Index.
-		int y = x, z = parent[y];
-		while (z != y) {
-			y = z;
-			z = parent[y];
-		}
-		y = parent[x];
-		while (z != y) {
-			parent[x] = z;
-			x = y;
-			y = parent[x];
-		}
-		return z;
-	}
-
-	void link(int x, int y){
-		x = find(x);
-		y = find(y);
-		if (x == y) return;
-		if (birthtime[x] > birthtime[y]){
-			parent[x] = y; 
-			birthtime[y] = min(birthtime[x], birthtime[y]);
-			time_max[y] = max(time_max[x], time_max[y]);
-		} else if(birthtime[x] < birthtime[y]) {
-			parent[y] = x;
-			birthtime[x] = min(birthtime[x], birthtime[y]);
-			time_max[x] = max(time_max[x], time_max[y]);
-		} else { //birthtime[x] == birthtime[y]
-			parent[x] = y;
-			time_max[y] = max(time_max[x], time_max[y]);
-		}
-	}
-};
-
 
 class JointPairs{
 
@@ -143,7 +92,7 @@ public:
 
 	void joint_pairs_main(){
 		cubes_edges.reserve(2);
-		union_find dset(ctr_moi, dcg);
+		Union_find dset(ctr_moi, dcg);
 		ctr->columns_to_reduce.clear();
 		ctr->dim = 1;
 		double min_birth = dcg -> threshold;
