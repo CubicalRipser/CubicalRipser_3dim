@@ -1,6 +1,5 @@
 #include <iostream>
 #include <algorithm>
-//#include <string>
 
 #include "BirthdayIndex.h"
 #include "DenseCubicalGrids.h"

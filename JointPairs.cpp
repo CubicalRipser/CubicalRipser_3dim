@@ -3,7 +3,6 @@
 #include <vector>
 #include <cstdint>
 
-
 #include "BirthdayIndex.h"
 #include "DenseCubicalGrids.h"
 #include "ColumnsToReduce.h"
