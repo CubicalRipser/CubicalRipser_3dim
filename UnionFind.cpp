@@ -1,12 +1,12 @@
 #include <vector>
 
-//#include "BirthdayIndex.h"
+#include "BirthdayIndex.h"
 #include "DenseCubicalGrids.h"
-#include "Union_find.h"
+#include "UnionFind.h"
 
 using namespace std;
 
-	Union_find::Union_find(int moi, DenseCubicalGrids* _dcg) : parent(moi), birthtime(moi), time_max(moi) { // Thie "n" is the number of cubes.
+	UnionFind::UnionFind(int moi, DenseCubicalGrids* _dcg) : parent(moi), birthtime(moi), time_max(moi) { // Thie "n" is the number of cubes.
 		dcg = _dcg;
 		max_of_index = moi;
 
@@ -17,7 +17,7 @@ using namespace std;
 		}
 	}
 
-	int Union_find::find(int x){ // Thie "x" is Index.
+	int UnionFind::find(int x){ // Thie "x" is Index.
 		int y = x, z = parent[y];
 		while (z != y) {
 			y = z;
@@ -32,7 +32,7 @@ using namespace std;
 		return z;
 	}
 
-	void Union_find::link(int x, int y){
+	void UnionFind::link(int x, int y){
 		x = find(x);
 		y = find(y);
 		if (x == y) return;

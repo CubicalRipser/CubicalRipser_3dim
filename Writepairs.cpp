@@ -1,20 +1,20 @@
-#include "Writepairs.h"
+#include "WritePairs.h"
 
-	Writepairs::Writepairs(int64_t _dim, double _birth, double _death){
+	WritePairs::WritePairs(int64_t _dim, double _birth, double _death){
 		dim = _dim;
 		birth = _birth;
 		death = _death;
 	}
 
-	int64_t Writepairs::getDimension(){
+	int64_t WritePairs::getDimension(){
 		return dim;
 	}
 
-	double Writepairs::getBirth(){
+	double WritePairs::getBirth(){
 		return birth;
 	}
 
-	double Writepairs::getDeath(){
+	double WritePairs::getDeath(){
 		return death;
 	}
 	

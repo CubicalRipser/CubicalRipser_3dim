@@ -41,106 +41,13 @@ using namespace std;
 #include "DenseCubicalGrids.h"
 #include "ColumnsToReduce.h"
 #include "SimplexCoboundaryEnumerator.h"
-#include "Union_find.h"
-#include "Writepairs.h"
+#include "UnionFind.h"
+#include "WritePairs.h"
+#include "JointPairs.h"
 
 template <class Key, class T> class hash_map : public std::unordered_map<Key, T> {};
 
 enum calculation_method { LINKFIND, COMPUTEPAIRS};
-
-class JointPairs{
-
-	int n; // the number of cubes
-	int ctr_moi;
-	int ax, ay, az;
-	DenseCubicalGrids* dcg;
-	ColumnsToReduce* ctr;
-	vector<Writepairs> *wp;
-	Vertices* vtx;
-	double u, v;
-	vector<int64_t> cubes_edges;
-	vector<BirthdayIndex> dim1_simplex_list;
-
-public:
-	JointPairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<Writepairs> &_wp){
-		dcg = _dcg;
-		ax = dcg->ax;
-		ay = dcg->ay;
-		az = dcg->az;
-		ctr = _ctr; // ctr is "0-dim"simplex list.
-		ctr_moi = ctr->max_of_index;
-		n = ctr->columns_to_reduce.size();
-
-		wp = &_wp;
-		vtx = new Vertices();
-
-		for(int x = 1; x <= ax; ++x){
-			for(int y = 1; y <= ay; ++y){
-				for(int z = 1; z <= az; ++z){
-					for(int type = 0; type < 3; ++type){
-						int index = x | (y << 9) | (z << 18) | (type << 27);
-						double birthday = dcg->getBirthday(index, 1);
-						if(birthday < dcg -> threshold){
-							dim1_simplex_list.push_back(BirthdayIndex(birthday, index, 1));
-						}
-					}
-				}
-			}
-		}
-		sort(dim1_simplex_list.begin(), dim1_simplex_list.end(), BirthdayIndexInverseComparator());
-	}
-
-	void joint_pairs_main(){
-		cubes_edges.reserve(2);
-		Union_find dset(ctr_moi, dcg);
-		ctr->columns_to_reduce.clear();
-		ctr->dim = 1;
-		double min_birth = dcg -> threshold;
-
-		#ifdef PRINT_PERSISTENCE_PAIRS
-			cout << "persistence intervals in dim " << 0 << ":" << endl;
-		#endif
-
-		for(auto e : dim1_simplex_list){
-			cubes_edges.clear();
-			dcg->GetSimplexVertices(e.getIndex(), 1, vtx);
-
-			cubes_edges[0] = vtx->vertex[0]->getIndex();
-			cubes_edges[1] = vtx->vertex[1]->getIndex();
-			u = dset.find(cubes_edges[0]);
-			v = dset.find(cubes_edges[1]);
-			
-			if(min_birth >= min(dset.birthtime[u], dset.birthtime[v])){
-				min_birth = min(dset.birthtime[u], dset.birthtime[v]);
-			}
-
-			if(u != v){
-				double birth = max(dset.birthtime[u], dset.birthtime[v]);
-				double death = max(dset.time_max[u], dset.time_max[v]);
-				if(birth == death){
-					dset.link(u, v);
-				} else {
-
-		#ifdef PRINT_PERSISTENCE_PAIRS
-					cout << "[" << birth << "," << death << ")" << endl;
-		#endif
-					wp->push_back(Writepairs(0, birth, death));
-					dset.link(u, v);
-				}
-			} else { // If two values have same "parent", these are potential edges which make a 2-simplex.
-				ctr->columns_to_reduce.push_back(e);
-			}
-		}
-
-		#ifdef PRINT_PERSISTENCE_PAIRS
-			cout << "[" << min_birth << ", )" << endl;
-		#endif
-
-		wp->push_back(Writepairs(-1, min_birth, dcg->threshold));
-		sort(ctr->columns_to_reduce.begin(), ctr->columns_to_reduce.end(), BirthdayIndexComparator());
-	}
-};
-
 
 class ComputePairs
 {
@@ -151,9 +58,9 @@ public:
 	int ax, ay, az;
 	int dim;
 	int mode = 0;
-	vector<Writepairs> *wp;
+	vector<WritePairs> *wp;
 
-	ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<Writepairs> &_wp, int _mode){
+	ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, int _mode){
 		dcg = _dcg;
 		ctr = _ctr;
 		dim = _ctr->dim;
@@ -220,7 +127,7 @@ public:
 			#ifdef PRINT_PERSISTENCE_PAIRS
 						cout << "[" << birth << ", )" << endl;
 			#endif
-						wp->push_back(Writepairs(-1, birth, dcg->threshold));
+						wp->push_back(WritePairs(-1, birth, dcg->threshold));
 						break;
 					}
 					double death = pivot.getBirthday();
@@ -229,12 +136,12 @@ public:
 			#ifdef PRINT_PERSISTENCE_PAIRS
 							cout << "[" << birth << "," << death <<  ")" << endl;
 			#endif
-							wp->push_back(Writepairs(dim, birth, death));
+							wp->push_back(WritePairs(dim, birth, death));
 						} else {
 			#ifdef PRINT_PERSISTENCE_PAIRS
 							cout << "[" << birth << ", )" << endl;
 			#endif
-							wp->push_back(Writepairs(-1, birth, dcg->threshold));
+							wp->push_back(WritePairs(-1, birth, dcg->threshold));
 						}
 					}
 					pivot_column_index.insert(make_pair(pivot.getIndex(), i));
@@ -247,12 +154,12 @@ public:
 			#ifdef PRINT_PERSISTENCE_PAIRS
 							cout << "[" << birth << "," << death << ")" << endl;
 			#endif
-							wp->push_back(Writepairs(dim, birth, death));
+							wp->push_back(WritePairs(dim, birth, death));
 						} else {
 			#ifdef PRINT_PERSISTENCE_PAIRS
 							cout << "[" << birth << ", )" << endl;
 			#endif
-							wp->push_back(Writepairs(-1, birth, dcg->threshold));
+							wp->push_back(WritePairs(-1, birth, dcg->threshold));
 						}
 					}
 					 
@@ -409,8 +316,8 @@ int main(int argc, char** argv){
 		exit(-1);
 	}
 
-	vector<Writepairs> writepairs; // dim birth death
-	writepairs.clear();
+	vector<WritePairs> writePairs; // dim birth death
+	writePairs.clear();
 	
 	DenseCubicalGrids* dcg = new DenseCubicalGrids(filename, threshold, format);
 	ColumnsToReduce* ctr = new ColumnsToReduce(dcg);
@@ -418,10 +325,10 @@ int main(int argc, char** argv){
 	switch(method){
 		case LINKFIND:
 		{
-			JointPairs* jp = new JointPairs(dcg, ctr, writepairs);
+			JointPairs* jp = new JointPairs(dcg, ctr, writePairs);
 			jp->joint_pairs_main(); // dim0
 
-			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs, 1);
+			ComputePairs* cp = new ComputePairs(dcg, ctr, writePairs, 1);
 			cp->compute_pairs_main(); // dim1
 			cp->assemble_columns_to_reduce();
 			
@@ -431,7 +338,7 @@ int main(int argc, char** argv){
 		
 		case COMPUTEPAIRS:
 		{
-			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs, 1);
+			ComputePairs* cp = new ComputePairs(dcg, ctr, writePairs, 1);
 			cp->compute_pairs_main(); // dim0
 			cp->assemble_columns_to_reduce();
 
@@ -455,17 +362,17 @@ int main(int argc, char** argv){
 	writing_file.write((char *) &mn, sizeof( int64_t )); // magic number
 	int64_t type = 2;
 	writing_file.write((char *) &type, sizeof( int64_t )); // type number of PERSISTENCE_DIAGRAM
-	int64_t p = writepairs.size();
+	int64_t p = writePairs.size();
 	cout << "the number of pairs : " << p << endl;
 	writing_file.write((char *) &p, sizeof( int64_t )); // number of points in the diagram p
 	for(int64_t i = 0; i < p; ++i){
-		int64_t writedim = writepairs[i].getDimension();
+		int64_t writedim = writePairs[i].getDimension();
 		writing_file.write((char *) &writedim, sizeof( int64_t )); // dim
 
-		double writebirth = writepairs[i].getBirth();
+		double writebirth = writePairs[i].getBirth();
 		writing_file.write((char *) &writebirth, sizeof( double )); // birth
 		
-		double writedeath = writepairs[i].getDeath();
+		double writedeath = writePairs[i].getDeath();
 		writing_file.write((char *) &writedeath, sizeof( double )); // death
 	}
 	writing_file.close();
@@ -480,12 +387,12 @@ int main(int argc, char** argv){
 		cout << " error: open file for output failed! " << endl;
 	}
 
-	int64_t p = writepairs.size();
+	int64_t p = writePairs.size();
 	for(int64_t i = 0; i < p; ++i){
-		writing_file << writepairs[i].getDimension() << ",";
+		writing_file << writePairs[i].getDimension() << ",";
 
-		writing_file << writepairs[i].getBirth() << ",";
-		writing_file << writepairs[i].getDeath() << endl;
+		writing_file << writePairs[i].getBirth() << ",";
+		writing_file << writePairs[i].getDeath() << endl;
 	}
 	writing_file.close();
 #endif
