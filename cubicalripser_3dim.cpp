@@ -37,39 +37,12 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-//#include "ColumnsToReduce.h"
 #include "SimplexCoboundaryEnumerator.h"
+#include "Writepairs.h"
 
 template <class Key, class T> class hash_map : public std::unordered_map<Key, T> {};
 
 enum calculation_method { LINKFIND, COMPUTEPAIRS};
-
-class Writepairs
-{
-public:
-	int64_t dim;
-	double birth;
-	double death;
-
-	Writepairs(int64_t _dim, double _birth, double _death){
-		dim = _dim;
-		birth = _birth;
-		death = _death;
-	}
-
-	int64_t getDimension(){
-		return dim;
-	}
-
-	double getBirth(){
-		return birth;
-	}
-
-	double getDeath(){
-		return death;
-	}
-	
-};
 
 
 class union_find{

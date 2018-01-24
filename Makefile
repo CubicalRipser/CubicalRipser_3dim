@@ -1,6 +1,6 @@
 TARGET = CR3
-SRCS = CubicalRipser_3dim.cpp DenseCubicalGrids.cpp Coeff.cpp Vertices.cpp BirthdayIndex.cpp ColumnsToReduce.cpp SimplexCoboundaryEnumerator.cpp
-OBJS = CubicalRipser_3dim.o DenseCubicalGrids.o Coeff.o Vertices.o BirthdayIndex.o ColumnsToReduce.o SimplexCoboundaryEnumerator.o
+SRCS = CubicalRipser_3dim.cpp DenseCubicalGrids.cpp Coeff.cpp Vertices.cpp BirthdayIndex.cpp ColumnsToReduce.cpp SimplexCoboundaryEnumerator.cpp Writepairs.cpp
+OBJS = CubicalRipser_3dim.o DenseCubicalGrids.o Coeff.o Vertices.o BirthdayIndex.o ColumnsToReduce.o SimplexCoboundaryEnumerator.o Writepairs.o
 
 all: $(TARGET)
 
@@ -26,4 +26,7 @@ ColumnsToReduce.o: ColumnsToReduce.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
 SimplexCoboundaryEnumerator.o: SimplexCoboundaryEnumerator.cpp
+	c++ -std=c++11 -c -o $@ $< -Ofast
+
+Writepairs.o: Writepairs.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
