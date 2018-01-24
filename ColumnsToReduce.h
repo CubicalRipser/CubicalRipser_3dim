@@ -1,5 +1,8 @@
+#include <vector>
 #include "BirthdayIndex.h"
 #include "DenseCubicalGrids.h"
+
+using namespace std;
 
 class ColumnsToReduce{
 public:
