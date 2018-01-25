@@ -42,11 +42,10 @@ using namespace std;
 #include "ColumnsToReduce.h"
 #include "SimplexCoboundaryEnumerator.h"
 #include "UnionFind.h"
-#include "Writepairs.h"
+#include "WritePairs.h"
 #include "JointPairs.h"
 #include "ComputePairs.h"
 
-//template <class Key, class T> class hash_map : public std::unordered_map<Key, T> {};
 
 enum calculation_method { LINKFIND, COMPUTEPAIRS};
 
@@ -121,7 +120,7 @@ int main(int argc, char** argv){
 		exit(-1);
 	}
 
-	vector<Writepairs> writepairs; // dim birth death
+	vector<WritePairs> writepairs; // dim birth death
 	writepairs.clear();
 	
 	DenseCubicalGrids* dcg = new DenseCubicalGrids(filename, threshold, format);
@@ -133,7 +132,7 @@ int main(int argc, char** argv){
 			JointPairs* jp = new JointPairs(dcg, ctr, writepairs);
 			jp->joint_pairs_main(); // dim0
 
-			ComputePairs* cp = new ComputePairs(dcg, ctr, writeairs, 1);
+			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs);
 			cp->compute_pairs_main(); // dim1
 			cp->assemble_columns_to_reduce();
 			
@@ -143,7 +142,7 @@ int main(int argc, char** argv){
 		
 		case COMPUTEPAIRS:
 		{
-			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs, 1);
+			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs);
 			cp->compute_pairs_main(); // dim0
 			cp->assemble_columns_to_reduce();
 
@@ -157,35 +156,41 @@ int main(int argc, char** argv){
 
 #ifdef FILE_OUTPUT
 	ofstream writing_file;
-	writing_file.open(output_filename, ios::out | ios::binary);
-
-	if(!writing_file.is_open()){
-		cout << " error: open file for output failed! " << endl;
-	}
-
-	int64_t mn = 8067171840;
-	writing_file.write((char *) &mn, sizeof( int64_t )); // magic number
-	int64_t type = 2;
-	writing_file.write((char *) &type, sizeof( int64_t )); // type number of PERSISTENCE_DIAGRAM
-	int64_t p = writepairs.size();
-	cout << "the number of pairs : " << p << endl;
-	writing_file.write((char *) &p, sizeof( int64_t )); // number of points in the diagram p
-	for(int64_t i = 0; i < p; ++i){
-		int64_t writedim = writepairs[i].getDimension();
-		writing_file.write((char *) &writedim, sizeof( int64_t )); // dim
-
-		double writebirth = writepairs[i].getBirth();
-		writing_file.write((char *) &writebirth, sizeof( double )); // birth
+	
+	string extension = ".csv";
+	if(equal(extension.rbegin(), extension.rend(), output_filename.rbegin()) == true){
+		#define CSV_OUTPUT
+	} else {
 		
-		double writedeath = writepairs[i].getDeath();
-		writing_file.write((char *) &writedeath, sizeof( double )); // death
+		writing_file.open(output_filename, ios::out | ios::binary);
+
+		if(!writing_file.is_open()){
+			cout << " error: open file for output failed! " << endl;
+		}
+
+		int64_t mn = 8067171840;
+		writing_file.write((char *) &mn, sizeof( int64_t )); // magic number
+		int64_t type = 2;
+		writing_file.write((char *) &type, sizeof( int64_t )); // type number of PERSISTENCE_DIAGRAM
+		int64_t p = writepairs.size();
+		cout << "the number of pairs : " << p << endl;
+		writing_file.write((char *) &p, sizeof( int64_t )); // number of points in the diagram p
+		for(int64_t i = 0; i < p; ++i){
+			int64_t writedim = writepairs[i].getDimension();
+			writing_file.write((char *) &writedim, sizeof( int64_t )); // dim
+
+			double writebirth = writepairs[i].getBirth();
+			writing_file.write((char *) &writebirth, sizeof( double )); // birth
+			
+			double writedeath = writepairs[i].getDeath();
+			writing_file.write((char *) &writedeath, sizeof( double )); // death
+		}
+		writing_file.close();
 	}
-	writing_file.close();
 #endif
 
 #ifdef CSV_OUTPUT
 	string outname = output_filename;// .csv file
-	ofstream writing_file;
 	writing_file.open(outname, ios::out);
 
 	if(!writing_file.is_open()){
@@ -200,12 +205,6 @@ int main(int argc, char** argv){
 		writing_file << writepairs[i].getDeath() << endl;
 	}
 	writing_file.close();
-#endif
-
-#ifdef TIME_MEASURING
-	const auto endTime = chrono::system_clock::now();
-	const auto timeSpan = endTime - startTime;
-	cout << "processing-time : " << chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
 #endif
 
 	return 0;

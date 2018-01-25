@@ -13,10 +13,9 @@ public:
 	hash_map<int, int> pivot_column_index;
 	int ax, ay, az;
 	int dim;
-	int mode = 0;
 	vector<WritePairs> *wp;
 
-	ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, int _mode);
+	ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp);
 
 	void compute_pairs_main();
 

@@ -17,12 +17,11 @@ using namespace std;
 #include "JointPairs.h"
 #include "ComputePairs.h"
 	
-	ComputePairs::ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, int _mode){
+	ComputePairs::ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp){
 		dcg = _dcg;
 		ctr = _ctr;
 		dim = _ctr->dim;
 		wp = &_wp;
-		mode = _mode;
 
 		ax = _dcg->ax;
 		ay = _dcg->ay;
