@@ -14,10 +14,13 @@ public:
 	int ax, ay, az;
 	int dim;
 	vector<WritePairs> *wp;
+	bool print;
 
-	ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp);
+	ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, const bool _print);
 
 	void compute_pairs_main();
+
+	void outputPP(int _dim, double _birth, double _death);
 
 	BirthdayIndex pop_pivot(priority_queue<BirthdayIndex, vector<BirthdayIndex>, BirthdayIndexComparator>&
 		column);

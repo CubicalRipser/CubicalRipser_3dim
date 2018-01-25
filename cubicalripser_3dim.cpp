@@ -50,22 +50,23 @@ using namespace std;
 enum calculation_method { LINKFIND, COMPUTEPAIRS};
 
 void print_usage_and_exit(int exit_code) {
-	std::cerr << "Usage: "
-	          << "CR3 "
-	          << "[options] [input_filename]" << std::endl
-	          << std::endl
-	          << "Options:" << std::endl
-	          << std::endl
-	          << "  --help           print this screen" << std::endl
-	          << "  --format         use the specified file format for the input. Options are:" << std::endl
-	          << "                     dipha          (distance matrix in DIPHA file format; default)" << std::endl
-	          << "                     perseus        (distance matrix in Perseus file format)" << std::endl
-	          << "  --threshold <t>  compute cubical complexes up to birth time <t>" << std::endl
-	          << "  --method         method to compute the persistent homology of the cubical complexes. Options are" << std::endl
-	          << "                     link_find      (calculating the 0-dim PP, use 'link_find' algorithm; default)" << std::endl
-	          << "                     compute_pairs  (calculating the 0-dim PP, use 'compute_pairs' algorithm)" << std::endl
-	          << "  --output         name of file that will contain the persistence diagram " << std::endl
-	          << std::endl;
+	 cerr << "Usage: "
+	      << "CR3 "
+	      << "[options] [input_filename]" << endl
+	      << endl
+	      << "Options:" << endl
+	      << endl
+	      << "  --help           print this screen" << endl
+	      << "  --format         use the specified file format for the input. Options are:" << endl
+	      << "                     dipha          (distance matrix in DIPHA file format; default)" << endl
+	      << "                     perseus        (distance matrix in Perseus file format)" << endl
+	      << "  --threshold <t>  compute cubical complexes up to birth time <t>" << endl
+	      << "  --method         method to compute the persistent homology of the cubical complexes. Options are" << endl
+	      << "                     link_find      (calculating the 0-dim PP, use 'link_find' algorithm; default)" << endl
+	      << "                     compute_pairs  (calculating the 0-dim PP, use 'compute_pairs' algorithm)" << endl
+	      << "  --output         name of file that will contain the persistence diagram " << endl
+	      << "  --print          print persistence pairs on your console" << endl
+	      << endl;
 
 	exit(exit_code);
 }
@@ -78,18 +79,19 @@ int main(int argc, char** argv){
 	file_format format = DIPHA;
 	calculation_method method = LINKFIND;
 	double threshold = 99999;
+	bool print = false;
 
 	for (int i = 1; i < argc; ++i) {
-		const std::string arg(argv[i]);
+		const string arg(argv[i]);
 		if (arg == "--help") {
 			print_usage_and_exit(0);
 		} else if (arg == "--threshold") {
-			std::string parameter = std::string(argv[++i]);
+			string parameter = string(argv[++i]);
 			size_t next_pos;
-			threshold = std::stod(parameter, &next_pos);
+			threshold = stod(parameter, &next_pos);
 			if (next_pos != parameter.size()) print_usage_and_exit(-1);
 		} else if (arg == "--format") {
-			std::string parameter = std::string(argv[++i]);
+			string parameter = string(argv[++i]);
 			if (parameter == "dipha") {
 				format = DIPHA;
 			} else if (parameter == "perseus") {
@@ -98,7 +100,7 @@ int main(int argc, char** argv){
 				print_usage_and_exit(-1);
 			}
 		} else if(arg == "--method") {
-			std::string parameter = std::string(argv[++i]);
+			string parameter = string(argv[++i]);
 			if (parameter == "link_find") {
 				method = LINKFIND;
 			} else if (parameter == "compute_pairs") {
@@ -107,16 +109,18 @@ int main(int argc, char** argv){
 				print_usage_and_exit(-1);
 			}
 		} else if (arg == "--output") {
-			output_filename = std::string(argv[++i]);
+			output_filename = string(argv[++i]);
+		} else if (arg == "--print"){
+			print = true;
 		} else {
 			if (filename) { print_usage_and_exit(-1); }
 			filename = argv[i];
 		}
 	}
 
-    std::ifstream file_stream(filename);
+    ifstream file_stream(filename);
 	if (filename && file_stream.fail()) {
-		std::cerr << "couldn't open file " << filename << std::endl;
+		cerr << "couldn't open file " << filename << endl;
 		exit(-1);
 	}
 
@@ -129,27 +133,27 @@ int main(int argc, char** argv){
 	switch(method){
 		case LINKFIND:
 		{
-			JointPairs* jp = new JointPairs(dcg, ctr, writepairs);
-			jp->joint_pairs_main(); // dim0
+			JointPairs* jp = new JointPairs(dcg, ctr, writepairs, print);
+			jp -> joint_pairs_main(); // dim0
 
-			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs);
-			cp->compute_pairs_main(); // dim1
-			cp->assemble_columns_to_reduce();
+			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs, print);
+			cp -> compute_pairs_main(); // dim1
+			cp -> assemble_columns_to_reduce();
 			
-			cp->compute_pairs_main(); // dim2
+			cp -> compute_pairs_main(); // dim2
 		break;
 		}
 		
 		case COMPUTEPAIRS:
 		{
-			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs);
-			cp->compute_pairs_main(); // dim0
-			cp->assemble_columns_to_reduce();
+			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs, print);
+			cp -> compute_pairs_main(); // dim0
+			cp -> assemble_columns_to_reduce();
 
-			cp->compute_pairs_main(); // dim1
-			cp->assemble_columns_to_reduce();
+			cp -> compute_pairs_main(); // dim1
+			cp -> assemble_columns_to_reduce();
 
-			cp->compute_pairs_main(); // dim2
+			cp -> compute_pairs_main(); // dim2
 		break;
 		}
 	}
@@ -159,11 +163,11 @@ int main(int argc, char** argv){
 	
 	string extension = ".csv";
 	if(equal(extension.rbegin(), extension.rend(), output_filename.rbegin()) == true){
-		
+
 		string outname = output_filename;// .csv file
 		writing_file.open(outname, ios::out);
 		if(!writing_file.is_open()){
-			cout << " error: open file for output failed! " << endl;
+			cerr << " error: open file for output failed! " << endl;
 		}
 
 		int64_t p = writepairs.size();
@@ -179,7 +183,7 @@ int main(int argc, char** argv){
 		writing_file.open(output_filename, ios::out | ios::binary);
 
 		if(!writing_file.is_open()){
-			cout << " error: open file for output failed! " << endl;
+			cerr << " error: open file for output failed! " << endl;
 		}
 
 		int64_t mn = 8067171840;
@@ -201,24 +205,6 @@ int main(int argc, char** argv){
 		}
 		writing_file.close();
 	}
-#endif
-
-#ifdef CSV_OUTPUT
-	string outname = output_filename;// .csv file
-	writing_file.open(outname, ios::out);
-
-	if(!writing_file.is_open()){
-		cout << " error: open file for output failed! " << endl;
-	}
-
-	int64_t p = writepairs.size();
-	for(int64_t i = 0; i < p; ++i){
-		writing_file << writepairs[i].getDimension() << ",";
-
-		writing_file << writepairs[i].getBirth() << ",";
-		writing_file << writepairs[i].getDeath() << endl;
-	}
-	writing_file.close();
 #endif
 
 	return 0;
