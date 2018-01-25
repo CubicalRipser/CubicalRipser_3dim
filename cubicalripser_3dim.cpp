@@ -42,7 +42,7 @@ using namespace std;
 #include "ColumnsToReduce.h"
 #include "SimplexCoboundaryEnumerator.h"
 #include "UnionFind.h"
-#include "WritePairs.h"
+#include "Writepairs.h"
 #include "JointPairs.h"
 #include "ComputePairs.h"
 
@@ -52,7 +52,7 @@ enum calculation_method { LINKFIND, COMPUTEPAIRS};
 
 void print_usage_and_exit(int exit_code) {
 	std::cerr << "Usage: "
-	          << "cubicalripser_3dim "
+	          << "CR3 "
 	          << "[options] [input_filename]" << std::endl
 	          << std::endl
 	          << "Options:" << std::endl
@@ -121,8 +121,8 @@ int main(int argc, char** argv){
 		exit(-1);
 	}
 
-	vector<WritePairs> writePairs; // dim birth death
-	writePairs.clear();
+	vector<Writepairs> writepairs; // dim birth death
+	writepairs.clear();
 	
 	DenseCubicalGrids* dcg = new DenseCubicalGrids(filename, threshold, format);
 	ColumnsToReduce* ctr = new ColumnsToReduce(dcg);
@@ -130,10 +130,10 @@ int main(int argc, char** argv){
 	switch(method){
 		case LINKFIND:
 		{
-			JointPairs* jp = new JointPairs(dcg, ctr, writePairs);
+			JointPairs* jp = new JointPairs(dcg, ctr, writepairs);
 			jp->joint_pairs_main(); // dim0
 
-			ComputePairs* cp = new ComputePairs(dcg, ctr, writePairs, 1);
+			ComputePairs* cp = new ComputePairs(dcg, ctr, writeairs, 1);
 			cp->compute_pairs_main(); // dim1
 			cp->assemble_columns_to_reduce();
 			
@@ -143,7 +143,7 @@ int main(int argc, char** argv){
 		
 		case COMPUTEPAIRS:
 		{
-			ComputePairs* cp = new ComputePairs(dcg, ctr, writePairs, 1);
+			ComputePairs* cp = new ComputePairs(dcg, ctr, writepairs, 1);
 			cp->compute_pairs_main(); // dim0
 			cp->assemble_columns_to_reduce();
 
@@ -167,17 +167,17 @@ int main(int argc, char** argv){
 	writing_file.write((char *) &mn, sizeof( int64_t )); // magic number
 	int64_t type = 2;
 	writing_file.write((char *) &type, sizeof( int64_t )); // type number of PERSISTENCE_DIAGRAM
-	int64_t p = writePairs.size();
+	int64_t p = writepairs.size();
 	cout << "the number of pairs : " << p << endl;
 	writing_file.write((char *) &p, sizeof( int64_t )); // number of points in the diagram p
 	for(int64_t i = 0; i < p; ++i){
-		int64_t writedim = writePairs[i].getDimension();
+		int64_t writedim = writepairs[i].getDimension();
 		writing_file.write((char *) &writedim, sizeof( int64_t )); // dim
 
-		double writebirth = writePairs[i].getBirth();
+		double writebirth = writepairs[i].getBirth();
 		writing_file.write((char *) &writebirth, sizeof( double )); // birth
 		
-		double writedeath = writePairs[i].getDeath();
+		double writedeath = writepairs[i].getDeath();
 		writing_file.write((char *) &writedeath, sizeof( double )); // death
 	}
 	writing_file.close();
@@ -192,12 +192,12 @@ int main(int argc, char** argv){
 		cout << " error: open file for output failed! " << endl;
 	}
 
-	int64_t p = writePairs.size();
+	int64_t p = writepairs.size();
 	for(int64_t i = 0; i < p; ++i){
-		writing_file << writePairs[i].getDimension() << ",";
+		writing_file << writepairs[i].getDimension() << ",";
 
-		writing_file << writePairs[i].getBirth() << ",";
-		writing_file << writePairs[i].getDeath() << endl;
+		writing_file << writepairs[i].getBirth() << ",";
+		writing_file << writepairs[i].getDeath() << endl;
 	}
 	writing_file.close();
 #endif
