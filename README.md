@@ -17,3 +17,4 @@ We rearrange his codes of Ripser and add some new ideas for optimization on it
 and modify it for calculation of a cubical filtration.
 This part of CubicalRiper is a calculator of cubical persistence pairs for 
 3 dimensional voxel data. The input data format conforms to that of DIPHA and of PERSEUS.
+
