@@ -1,4 +1,4 @@
-# CubicalRipser_3dim : calculator of persistence pair for 2 dimensional pixel data
+# CubicalRipser_3dim : calculator of persistence pair for 3 dimensional voxel data
 
 copyright by Takeki Sudou and Kazushi Ahara, Meiji University, 2018
 
