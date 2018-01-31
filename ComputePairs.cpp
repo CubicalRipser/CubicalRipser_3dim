@@ -82,16 +82,17 @@ using namespace std;
 							continue;
 						}
 					} else {// working_coboundary
-						if(print == true){
+						/*if(print == true){
 							cout << "[" << birth << ", )" << endl;
 						}
 
 						wp->push_back(WritePairs(-1, birth, dcg -> threshold));
-						//outputPP();
+						*/
+						outputPP(-1, birth, dcg -> threshold);
 						break;
 					}
 					double death = pivot.getBirthday();
-					if (birth != death) {
+	/*				if (birth != death) {
 						if (death != dcg->threshold) {
 			#ifdef PRINT_PERSISTENCE_PAIRS
 							cout << "[" << birth << "," << death <<  ")" << endl;
@@ -104,13 +105,13 @@ using namespace std;
 							wp->push_back(WritePairs(-1, birth, dcg -> threshold));
 						}
 					}
-
-					//outputPP(dim, birth, death);
+    */
+					outputPP(dim, birth, death);
 					pivot_column_index.insert(make_pair(pivot.getIndex(), i));
 					break;
 				} else {
 					double death = pivot.getBirthday();
-
+/*
 					if (birth != death) {
 						if (death != dcg -> threshold) {
 			#ifdef PRINT_PERSISTENCE_PAIRS
@@ -124,8 +125,8 @@ using namespace std;
 							wp -> push_back(WritePairs(-1, birth, dcg->threshold));
 						}
 					}
-
-					//outputPP(-1, birth, dcg -> threshold);
+*/
+					outputPP(dim, birth, death);
 					pivot_column_index.insert(make_pair(pivot.getIndex(), i));
 					break;
 				}			
