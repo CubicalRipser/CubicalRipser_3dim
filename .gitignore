@@ -30,5 +30,7 @@
 *.exe
 *.out
 *.app
-answer_3dim.diagram
+
+*.diagram
+*.complex
 *.csv

@@ -86,13 +86,11 @@ using namespace std;
 						break;
 					}
 					double death = pivot.getBirthday();
-
 					outputPP(dim, birth, death);
 					pivot_column_index.insert(make_pair(pivot.getIndex(), i));
 					break;
 				} else {
 					double death = pivot.getBirthday();
-
 					outputPP(dim, birth, death);
 					pivot_column_index.insert(make_pair(pivot.getIndex(), i));
 					break;
