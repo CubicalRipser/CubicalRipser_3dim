@@ -18,3 +18,49 @@ and modify it for calculation of a cubical filtration.
 This part of CubicalRiper is a calculator of cubical persistence pairs for 
 3 dimensional voxel data. The input data format conforms to that of DIPHA and of PERSEUS.
 
+## how to make and execute
+
+To make an exe file, 
+
+    % make
+
+To execute CubicalRipser, 
+
+    % CR3 [oprtion] [input_filename]
+
+## option:
+
+    --help   
+
+       print options
+
+    --format     
+
+        use the specified file format for the input. Options are:
+	  
+        dipha          (voxel data in DIPHA file format; default
+       
+        perseus        (voxel data in Perseus file format)
+
+    --threshold <t>  
+  
+        compute cubical complexes up to birth time <t>
+    
+    --method 
+
+        method to compute the persistent homology of the cubical complexes. Options are:
+
+            link_find      (calculating the 0-dim PP, use 'link_find' algorithm; default)
+
+            compute_pairs  (calculating the 0-dim PP, use 'compute_pairs' algorithm)
+
+    --output [output_filename] 
+
+        name of file that will contain the persistence diagram. If the input_filename ends '.csv' then CR3 
+	outputs a CSV file. Otherwise, output file is DIPHA diagram file.
+
+	--print
+
+## about speed
+
+In 2 and 3 dimensional case, we believe that CubicalRipser is much faster than DIPHA.
