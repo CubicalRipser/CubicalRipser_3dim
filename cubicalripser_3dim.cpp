@@ -58,8 +58,8 @@ void print_usage_and_exit(int exit_code) {
 	      << endl
 	      << "  --help           print this screen" << endl
 	      << "  --format         use the specified file format for the input. Options are:" << endl
-	      << "                     dipha          (distance matrix in DIPHA file format; default)" << endl
-	      << "                     perseus        (distance matrix in Perseus file format)" << endl
+	      << "                     dipha          (voxel matrix in DIPHA file format; default)" << endl
+	      << "                     perseus        (voxel matrix in Perseus file format)" << endl
 	      << "  --threshold <t>  compute cubical complexes up to birth time <t>" << endl
 	      << "  --method         method to compute the persistent homology of the cubical complexes. Options are" << endl
 	      << "                     link_find      (calculating the 0-dim PP, use 'link_find' algorithm; default)" << endl
