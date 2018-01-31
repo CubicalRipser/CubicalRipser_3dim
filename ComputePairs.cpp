@@ -93,14 +93,14 @@ using namespace std;
 					double death = pivot.getBirthday();
 					if (birth != death) {
 						if (death != dcg->threshold) {
-			#ifdef PRINT_PERSISTENCE_PAIRS
-							cout << "[" << birth << "," << death <<  ")" << endl;
-			#endif
+							if(print == true){
+								cout << "[" << birth << "," << death <<  ")" << endl;
+							}
 							wp->push_back(WritePairs(dim, birth, death));
 						} else {
-			#ifdef PRINT_PERSISTENCE_PAIRS
-							cout << "[" << birth << ", )" << endl;
-			#endif
+							if(print == true){
+								cout << "[" << birth << ", )" << endl;
+							}
 							wp->push_back(WritePairs(-1, birth, dcg -> threshold));
 						}
 					}
@@ -113,14 +113,14 @@ using namespace std;
 
 					if (birth != death) {
 						if (death != dcg -> threshold) {
-			#ifdef PRINT_PERSISTENCE_PAIRS
-							cout << "[" << birth << "," << death << ")" << endl;
-			#endif
+							if(print == true){
+								cout << "[" << birth << "," << death << ")" << endl;
+							}			
 							wp -> push_back(WritePairs(dim, birth, death));
 						} else {
-			#ifdef PRINT_PERSISTENCE_PAIRS
-							cout << "[" << birth << ", )" << endl;
-			#endif
+							if(print == true){
+								cout << "[" << birth << ", )" << endl;
+							}
 							wp -> push_back(WritePairs(-1, birth, dcg->threshold));
 						}
 					}
