@@ -15,12 +15,12 @@ using namespace std;
 
 	JointPairs::JointPairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, const bool _print){
 		dcg = _dcg;
-		ax = dcg->ax;
-		ay = dcg->ay;
-		az = dcg->az;
+		ax = dcg -> ax;
+		ay = dcg -> ay;
+		az = dcg -> az;
 		ctr = _ctr; // ctr is "0-dim"simplex list.
-		ctr_moi = ctr->max_of_index;
-		n = ctr->columns_to_reduce.size();
+		ctr_moi = ctr -> max_of_index;
+		n = ctr -> columns_to_reduce.size();
 		print = _print;
 
 		wp = &_wp;
