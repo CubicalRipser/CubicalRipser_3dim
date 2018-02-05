@@ -61,7 +61,7 @@ To execute CubicalRipser,
 
     --print
   
-  	print persistence pairs on your console.
+        print persistence pairs on your console.
 
 ## about speed
 
