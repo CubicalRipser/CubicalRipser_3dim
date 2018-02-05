@@ -23,7 +23,6 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-//#define PRINT_PERSISTENCE_PAIRS
 #define FILE_OUTPUT
 
 #include <fstream>
@@ -209,4 +208,3 @@ int main(int argc, char** argv){
 
 	return 0;
 }
-
