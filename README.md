@@ -59,7 +59,9 @@ To execute CubicalRipser,
         name of file that will contain the persistence diagram. If the input_filename ends '.csv' then CR3 
 	outputs a CSV file. Otherwise, output file is DIPHA diagram file.
 
-	--print
+    --print
+  
+  	print persistence pairs on your console.
 
 ## about speed
 
