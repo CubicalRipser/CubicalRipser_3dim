@@ -27,7 +27,7 @@ You should have received a copy of the GNU Lesser General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -52,9 +52,9 @@ DenseCubicalGrids::DenseCubicalGrids(const string& filename, double _threshold, 
 
 			int64_t d;
 			fin.read( ( char * ) &d, sizeof( int64_t ) ); // magic number
-			//assert(d == 8067171840);
+			assert(d == 8067171840);
 			fin.read( ( char * ) &d, sizeof( int64_t ) ); // type number
-			//assert(d == 1);
+			assert(d == 1);
 			fin.read( ( char * ) &d, sizeof( int64_t ) ); //data num
 			fin.read( ( char * ) &d, sizeof( int64_t ) ); // dim 
 			dim = d;
@@ -64,7 +64,7 @@ DenseCubicalGrids::DenseCubicalGrids(const string& filename, double _threshold, 
 			ay = d;
 			fin.read( ( char * ) &d, sizeof( int64_t ) );
 			az = d;
-			//assert(0 < ax && ax < 510 && 0 < ay && ay < 510 && 0 < az && az < 510);
+			assert(0 < ax && ax < 510 && 0 < ay && ay < 510 && 0 < az && az < 510);
 			cout << "ax : ay : az = " << ax << " : " << ay << " : " << az << endl;
 
 			double dou;
@@ -103,6 +103,8 @@ DenseCubicalGrids::DenseCubicalGrids(const string& filename, double _threshold, 
 			ay = atoi(reading_line_buffer.c_str()); 
 			getline(reading_file, reading_line_buffer); 
 			az = atoi(reading_line_buffer.c_str());
+			assert(0 < ax && ax < 510 && 0 < ay && ay < 510 && 0 < az && az < 510);
+			cout << "ax : ay : az = " << ax << " : " << ay << " : " << az << endl;
 
 			for(int z = 0; z < az + 2; ++z){
 				for (int y = 0; y <ay + 2; ++y) { 
