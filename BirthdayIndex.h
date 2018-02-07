@@ -35,9 +35,14 @@ public:
 	double birthday;
 	int index;
 	int dim;
+
+	BirthdayIndex();
+		
 	BirthdayIndex(double _b, int _i, int _d);
 
-	void copyBirthdayIndex(BirthdayIndex* v);
+	BirthdayIndex(const BirthdayIndex& b);
+
+	void copyBirthdayIndex(BirthdayIndex v);
 
 	double getBirthday();
 

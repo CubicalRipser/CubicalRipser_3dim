@@ -33,16 +33,28 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
+BirthdayIndex::BirthdayIndex(){
+	birthday = 0;
+	index = -1;
+	dim = 1;
+}
+
 BirthdayIndex::BirthdayIndex(double _b, int _i, int _d){
 	birthday = _b;
 	index = _i;
 	dim = _d;
 }
 
-void BirthdayIndex::copyBirthdayIndex(BirthdayIndex* v){
-	birthday = v->birthday;
-	index = v->index;
-	dim = v->dim;
+BirthdayIndex::BirthdayIndex(const BirthdayIndex& b){
+	birthday = b.birthday;
+	index = b.index;
+	dim = b.dim;
+}
+
+void BirthdayIndex::copyBirthdayIndex(BirthdayIndex v){
+	birthday = v.birthday;
+	index = v.index;
+	dim = v.dim;
 }
 
 double BirthdayIndex::getBirthday(){

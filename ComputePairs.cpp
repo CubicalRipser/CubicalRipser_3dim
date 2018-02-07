@@ -67,8 +67,11 @@ void ComputePairs::compute_pairs_main(){
 	pivot_column_index = hash_map<int, int>();
 	vector<BirthdayIndex> coface_entries;
 	auto ctl_size = ctr -> columns_to_reduce.size();
-	pivot_column_index.reserve(ctl_size);
 	SimplexCoboundaryEnumerator cofaces;
+	unordered_map<int, priority_queue<BirthdayIndex, vector<BirthdayIndex>, BirthdayIndexComparator>> recorded_wc;
+
+	pivot_column_index.reserve(ctl_size);
+	recorded_wc.reserve(ctl_size);
 		
 	for(int i = 0; i < ctl_size; ++i){ 
 		auto column_to_reduce = ctr -> columns_to_reduce[i]; 
@@ -82,25 +85,70 @@ void ComputePairs::compute_pairs_main(){
 		bool goto_found_persistence_pair = false;
 
 		do {
-			auto simplex = &(ctr -> columns_to_reduce[j]);
+			auto simplex = ctr -> columns_to_reduce[j]; // get CTR[i] 
 			coface_entries.clear();
-			cofaces.setSimplexCoboundaryEnumerator(simplex, dcg);
+			cofaces.setSimplexCoboundaryEnumerator(simplex, dcg);// make coface data
 
-			while (cofaces.hasNextCoface(simplex -> getBirthday()) && !goto_found_persistence_pair) {
-				BirthdayIndex* coface = cofaces.getNextCoface();
-				coface_entries.push_back(*coface);
-				if (might_be_apparent_pair && (simplex -> getBirthday() == coface -> getBirthday())) {
-					if (pivot_column_index.find(coface -> getIndex()) == pivot_column_index.end()) {
-						pivot.copyBirthdayIndex(coface);
-						goto_found_persistence_pair = true;
-					} else {
-						might_be_apparent_pair = false;
+			while (cofaces.hasNextCoface() && !goto_found_persistence_pair) { // repeat there remains a coface
+				BirthdayIndex coface = cofaces.getNextCoface();
+				coface_entries.push_back(coface);
+				if (might_be_apparent_pair && (simplex.getBirthday() == coface.getBirthday())) { // If bt is the same, go thru
+					if (pivot_column_index.find(coface.getIndex()) == pivot_column_index.end()) { // If coface is not in pivot list
+						pivot.copyBirthdayIndex(coface); // I have a new pivot
+						goto_found_persistence_pair = true; // goto (B)
+					} else { // If pivot list contains this coface,
+						might_be_apparent_pair = false; // goto (A)
 					}
 				}
 			}
 
-			if (!goto_found_persistence_pair) {
-				for (auto e : coface_entries) {
+			if (!goto_found_persistence_pair) { // (A) If pivot list contains this coface,
+				auto findWc = recorded_wc.find(j); // we seek wc list by 'j'
+
+				if(findWc != recorded_wc.end()){ // If the pivot is old,
+					auto wc = findWc -> second;
+					while(!wc.empty()){ // we push the data of the old pivot's wc
+						auto e = wc.top();
+						working_coboundary.push(e);
+						wc.pop();
+					}
+				} else { // If the pivot is new,
+					for(auto e : coface_entries){ // making wc here
+						working_coboundary.push(e);
+					}
+				}
+				pivot = get_pivot(working_coboundary); // getting a pivot from wc
+
+				if (pivot.getIndex() != -1) { // When I have a pivot, ...
+					auto pair = pivot_column_index.find(pivot.getIndex());
+					if (pair != pivot_column_index.end()) {	// If the pivot already exists, go on the loop 
+						j = pair -> second;
+						continue;
+					} else { // If the pivot is new, 
+						// I record this wc into recorded_wc, and 
+						recorded_wc.insert(make_pair(i, working_coboundary));
+						// I output PP as Writepairs
+						double death = pivot.getBirthday();
+						outputPP(dim, birth, death);
+						pivot_column_index.insert(make_pair(pivot.getIndex(), i));
+						break;
+					}
+				} else { // If wc is empty, I output a PP as [birth,) 
+					outputPP(-1, birth, dcg -> threshold);
+					break;
+				}
+			} else { // (B) I have a new pivot and output PP as Writepairs 
+				double death = pivot.getBirthday();
+				outputPP(dim, birth, death);
+				pivot_column_index.insert(make_pair(pivot.getIndex(), i));
+				break;
+			}			
+
+		} while (true);
+	}
+}
+/*
+				for (auto e : coface_entries) { //
 					working_coboundary.push(e);
 				}
 				pivot = get_pivot(working_coboundary); 
@@ -128,7 +176,7 @@ void ComputePairs::compute_pairs_main(){
 
 		} while (true);
 	}
-}
+}*/
 
 void ComputePairs::outputPP(int _dim, double _birth, double _death){
 	if(_birth != _death){

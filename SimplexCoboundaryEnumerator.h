@@ -31,20 +31,21 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 class SimplexCoboundaryEnumerator
 {
 public:
-	BirthdayIndex* simplex;
+	BirthdayIndex simplex;
 	DenseCubicalGrids* dcg;
 	Vertices* vtx;
+	double birthtime;
 	int ax, ay, az;
 	int cx, cy, cz;
 	int count;
-	BirthdayIndex* nextCoface;
+	BirthdayIndex nextCoface;
 	double threshold;
 
 	SimplexCoboundaryEnumerator();
 
-	void setSimplexCoboundaryEnumerator(BirthdayIndex* _s, DenseCubicalGrids* _dcg); 
+	void setSimplexCoboundaryEnumerator(BirthdayIndex _s, DenseCubicalGrids* _dcg); 
 
-	bool hasNextCoface(double birthtime); 
+	bool hasNextCoface(); 
 
-	BirthdayIndex* getNextCoface();
+	BirthdayIndex getNextCoface();
 };
