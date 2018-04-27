@@ -58,7 +58,7 @@ DenseCubicalGrids::DenseCubicalGrids(const string& filename, double _threshold, 
 			fin.read( ( char * ) &d, sizeof( int64_t ) ); //data num
 			fin.read( ( char * ) &d, sizeof( int64_t ) ); // dim 
 			dim = d;
-			assert(dim == 2);
+			assert(dim == 3);
 			fin.read( ( char * ) &d, sizeof( int64_t ) );
 			ax = d;
 			fin.read( ( char * ) &d, sizeof( int64_t ) );
