@@ -3,6 +3,7 @@
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
 This file is part of CubicalRipser_3dim.
+
 CubicalRipser: C++ system for computation of Cubical persistence pairs
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 CubicalRipser is free software: you can redistribute it and/or modify it under
