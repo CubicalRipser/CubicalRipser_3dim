@@ -1,4 +1,4 @@
-/* coeff.h
+/* coeff.cpp
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -15,7 +15,6 @@ CubicalRipser is deeply depending on 'Ripser', software for Vietoris-Rips
 persitence pairs by Ulrich Bauer, 2015-2016.  We appreciate Ulrich very much.
 We rearrange his codes of Ripser and add some new ideas for optimization on it 
 and modify it for calculation of a Cubical filtration.
-
 This part of CubicalRiper is a calculator of cubical persistence pairs for 
 3 dimensional pixel data. The input data format conforms to that of DIPHA.
  See more descriptions in README.
@@ -61,4 +60,3 @@ void Coeff::setIndex(int index){
 int Coeff::getIndex(){
 	return cx | cy << 9 | cz << 18 | cm << 27;
 }
-
