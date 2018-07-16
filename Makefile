@@ -1,41 +1,41 @@
 TARGET = CR3
-SRCS = CubicalRipser_3dim.cpp DenseCubicalGrids.cpp Coeff.cpp Vertices.cpp BirthdayIndex.cpp ColumnsToReduce.cpp SimplexCoboundaryEnumerator.cpp WritePairs.cpp UnionFind.cpp JointPairs.cpp ComputePairs.cpp
-OBJS = CubicalRipser_3dim.o DenseCubicalGrids.o Coeff.o Vertices.o BirthdayIndex.o ColumnsToReduce.o SimplexCoboundaryEnumerator.o WritePairs.o UnionFind.o JointPairs.o ComputePairs.o
+SRCS = cubicalripser_3dim.cpp dense_cubical_grids.cpp coeff.cpp vertices.cpp birthday_index.cpp columns_to_reduce.cpp simplex_coboundary_enumerator.cpp write_pairs.cpp union_find.cpp joint_pairs.cpp compute_pairs.cpp
+OBJS = cubicalripser_3dim.o dense_cubical_grids.o coeff.o vertices.o birthday_index.o columns_to_reduce.o simplex_coboundary_enumerator.o write_pairs.o union_find.o joint_pairs.o compute_pairs.o
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS) $(SRCS)
 	c++ -std=c++11 -o $@ $(OBJS)
 
-CubicalRipser_3dim.o: CubicalRipser_3dim.cpp
+cubicalripser_3dim.o: cubicalripser_3dim.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-DenseCubicalGrids.o: DenseCubicalGrids.cpp
+dense_cubical_grids.o: dense_cubical_grids.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-Coeff.o: Coeff.cpp
+coeff.o: coeff.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-Vertices.o: Vertices.cpp
+vertices.o: vertices.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-BirthdayIndex.o: BirthdayIndex.cpp
+birthday_index.o: birthday_index.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-ColumnsToReduce.o: ColumnsToReduce.cpp
+columns_to_reduce.o: columns_to_reduce.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-SimplexCoboundaryEnumerator.o: SimplexCoboundaryEnumerator.cpp
+simplex_coboundary_enumerator.o: simplex_coboundary_enumerator.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-WritePairs.o: WritePairs.cpp
+write_pairs.o: write_pairs.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-UnionFind.o: UnionFind.cpp
+union_find.o: union_find.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-JointPairs.o: JointPairs.cpp
+joint_pairs.o: joint_pairs.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast
 
-ComputePairs.o: ComputePairs.cpp
+compute_pairs.o: compute_pairs.cpp
 	c++ -std=c++11 -c -o $@ $< -Ofast

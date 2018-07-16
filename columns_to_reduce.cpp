@@ -1,4 +1,4 @@
-/* UnionFind.h
+/* columns_to_reduce.cpp
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,21 +28,37 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include <vector>
+#include <algorithm>
+
+#include "birthday_index.h"
+#include "dense_cubical_grids.h"
+#include "columns_to_reduce.h"
 
 using namespace std;
 
-class UnionFind{
-public:
-	int max_of_index;
-	vector<int> parent;
-	vector<double> birthtime;
-	vector<double> time_max;
-	DenseCubicalGrids* dcg;
+ColumnsToReduce::ColumnsToReduce(DenseCubicalGrids* _dcg) { 
+	dim = 0;
+	int ax = _dcg -> ax;
+	int ay = _dcg -> ay;
+	int az = _dcg -> az;
+	max_of_index = 512 * 512 * (az + 2);
+	int index;
+	double birthday;
+		
+	for(int z = az; z > 0; --z){
+		for (int y = ay; y > 0; --y) {
+			for (int x = ax; x > 0; --x) {
+				birthday = _dcg -> dense3[x][y][z];
+				index = x | (y << 9) | (z << 18);
+				if (birthday != _dcg -> threshold) {
+					columns_to_reduce.push_back(BirthdayIndex(birthday, index, 0));
+				}
+			}
+		}
+	}
+	sort(columns_to_reduce.begin(), columns_to_reduce.end(), BirthdayIndexComparator());
+}
 
-	UnionFind(int moi, DenseCubicalGrids* _dcg); // Thie "n" is the number of cubes.
-	
-	int find(int x); // Thie "x" is Index.
-	
-	void link(int x, int y);
-};
+int ColumnsToReduce::size() {
+	return columns_to_reduce.size();
+}

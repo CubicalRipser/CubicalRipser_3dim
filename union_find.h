@@ -1,4 +1,4 @@
-/* WritePairs.cpp
+/* union_find.h
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,23 +28,21 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include "WritePairs.h"
+#include <vector>
 
-WritePairs::WritePairs(int64_t _dim, double _birth, double _death){
-	dim = _dim;
-	birth = _birth;
-	death = _death;
-}
+using namespace std;
 
-int64_t WritePairs::getDimension(){
-	return dim;
-}
+class UnionFind{
+public:
+	int max_of_index;
+	vector<int> parent;
+	vector<double> birthtime;
+	vector<double> time_max;
+	DenseCubicalGrids* dcg;
 
-double WritePairs::getBirth(){
-	return birth;
-}
-
-double WritePairs::getDeath(){
-	return death;
-}
+	UnionFind(int moi, DenseCubicalGrids* _dcg); // Thie "n" is the number of cubes.
 	
+	int find(int x); // Thie "x" is Index.
+	
+	void link(int x, int y);
+};

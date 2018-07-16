@@ -1,4 +1,4 @@
-/* WritePairs.h
+/* joint_pairs.h
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,21 +28,27 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
+#include <vector>
 #include <cstdint>
 
-class WritePairs
-{
+using namespace std;
+
+class JointPairs{
+
+	int n; // the number of cubes
+	int ctr_moi;
+	int ax, ay, az;
+	DenseCubicalGrids* dcg;
+	ColumnsToReduce* ctr;
+	vector<WritePairs> *wp;
+	bool print;
+	Vertices* vtx;
+	double u, v;
+	vector<int64_t> cubes_edges;
+	vector<BirthdayIndex> dim1_simplex_list;
+
 public:
-	int64_t dim;
-	double birth;
-	double death;
+	JointPairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, const bool _print);
 
-	WritePairs(int64_t _dim, double _birth, double _death);
-
-	int64_t getDimension();
-
-	double getBirth();
-
-	double getDeath();
-	
+	void joint_pairs_main();
 };

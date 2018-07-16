@@ -1,4 +1,4 @@
-/* JointPairs.h
+/* dense_cubical_grids.h
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,27 +28,26 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include <vector>
-#include <cstdint>
+#include <string>
+
+#include "vertices.h"
 
 using namespace std;
 
-class JointPairs{
+enum file_format { DIPHA, PERSEUS };
 
-	int n; // the number of cubes
-	int ctr_moi;
-	int ax, ay, az;
-	DenseCubicalGrids* dcg;
-	ColumnsToReduce* ctr;
-	vector<WritePairs> *wp;
-	bool print;
-	Vertices* vtx;
-	double u, v;
-	vector<int64_t> cubes_edges;
-	vector<BirthdayIndex> dim1_simplex_list;
-
+class DenseCubicalGrids { // file_read
 public:
-	JointPairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, const bool _print);
+	double threshold;
+	int dim;
+	int ax, ay, az;
+	double dense3[512][512][512];
+	file_format format;
 
-	void joint_pairs_main();
+	DenseCubicalGrids(const std::string& filename, double _threshold, file_format _format);
+
+	double getBirthday(int index, int dim);
+
+	void GetSimplexVertices(int index, int dim, Vertices* v);
+
 };

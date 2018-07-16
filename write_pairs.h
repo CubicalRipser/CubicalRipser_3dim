@@ -1,4 +1,4 @@
-/* ComputePairs.h
+/* write_pairs.h
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,35 +28,21 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include <vector>
-#include <unordered_map>
+#include <cstdint>
 
-using namespace std;
-
-template <class Key, class T> class hash_map : public std::unordered_map<Key, T> {};
-
-class ComputePairs
+class WritePairs
 {
 public:
-	DenseCubicalGrids* dcg;
-	ColumnsToReduce* ctr;
-	hash_map<int, int> pivot_column_index;
-	int ax, ay, az;
-	int dim;
-	vector<WritePairs> *wp;
-	bool print;
+	int64_t dim;
+	double birth;
+	double death;
 
-	ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, const bool _print);
+	WritePairs(int64_t _dim, double _birth, double _death);
 
-	void compute_pairs_main();
+	int64_t getDimension();
 
-	void outputPP(int _dim, double _birth, double _death);
+	double getBirth();
 
-	BirthdayIndex pop_pivot(priority_queue<BirthdayIndex, vector<BirthdayIndex>, BirthdayIndexComparator>&
-		column);
-
-	BirthdayIndex get_pivot(priority_queue<BirthdayIndex, vector<BirthdayIndex>, BirthdayIndexComparator>&
-		column);
-
-	void assemble_columns_to_reduce();
+	double getDeath();
+	
 };

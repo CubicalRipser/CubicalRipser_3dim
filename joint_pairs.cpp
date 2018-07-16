@@ -1,4 +1,4 @@
-/* JointPairs.cpp
+/* joint_pairs.cpp
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -33,13 +33,13 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 #include <cstdint>
 
-#include "BirthdayIndex.h"
-#include "DenseCubicalGrids.h"
-#include "ColumnsToReduce.h"
-#include "SimplexCoboundaryEnumerator.h"
-#include "UnionFind.h"
-#include "WritePairs.h"
-#include "JointPairs.h"
+#include "birthday_index.h"
+#include "dense_cubical_grids.h"
+#include "columns_to_reduce.h"
+#include "simplex_coboundary_enumerator.h"
+#include "union_find.h"
+#include "write_pairs.h"
+#include "joint_pairs.h"
 
 using namespace std;
 
@@ -69,7 +69,7 @@ JointPairs::JointPairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<Wr
 			}
 		}
 	}
-	sort(dim1_simplex_list.begin(), dim1_simplex_list.end(), BirthdayIndexInverseComparator());
+	sort(dim1_simplex_list.rbegin(), dim1_simplex_list.rend(), BirthdayIndexComparator());
 }
 
 void JointPairs::joint_pairs_main(){
@@ -82,13 +82,14 @@ void JointPairs::joint_pairs_main(){
 	if(print == true){
 		cout << "persistence intervals in dim " << 0 << ":" << endl;
 	}
-		
+	
 	for(auto e : dim1_simplex_list){
 		cubes_edges.clear();
 		dcg -> GetSimplexVertices(e.getIndex(), 1, vtx);
 
 		cubes_edges[0] = vtx -> vertex[0] -> getIndex();
 		cubes_edges[1] = vtx -> vertex[1] -> getIndex();
+
 		u = dset.find(cubes_edges[0]);
 		v = dset.find(cubes_edges[1]);
 			
@@ -99,10 +100,10 @@ void JointPairs::joint_pairs_main(){
 		if(u != v){
 			double birth = max(dset.birthtime[u], dset.birthtime[v]);
 			double death = max(dset.time_max[u], dset.time_max[v]);
+
 			if(birth == death){
 				dset.link(u, v);
 			} else {
-
 				if(print == true){
 					cout << "[" << birth << "," << death << ")" << endl;
 				}

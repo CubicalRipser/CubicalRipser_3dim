@@ -1,4 +1,4 @@
-/* ColumnsToReduce.cpp
+/* union_find.cpp
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,39 +28,54 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include <iostream>
-#include <algorithm>
+#include <vector>
 
-#include "BirthdayIndex.h"
-#include "DenseCubicalGrids.h"
-#include "ColumnsToReduce.h"
+#include "birthday_index.h"
+#include "dense_cubical_grids.h"
+#include "union_find.h"
 
 using namespace std;
 
+UnionFind::UnionFind(int moi, DenseCubicalGrids* _dcg) : parent(moi), birthtime(moi), time_max(moi) { // Thie "n" is the number of cubes.
+	dcg = _dcg;
+	max_of_index = moi;
 
-ColumnsToReduce::ColumnsToReduce(DenseCubicalGrids* _dcg) { 
-	dim = 0;
-	int ax = _dcg -> ax;
-	int ay = _dcg -> ay;
-	int az = _dcg -> az;
-	max_of_index = 512 * 512 * (az + 2);
-	int index;
-	double birthday;
-		
-	for(int z = az; z > 0; --z){
-		for (int y = ay; y > 0; --y) {
-			for (int x = ax; x > 0; --x) {
-				birthday = _dcg -> dense3[x][y][z];
-				index = x | (y << 9) | (z << 18);
-				if (birthday != _dcg -> threshold) {
-					columns_to_reduce.push_back(BirthdayIndex(birthday, index, 0));
-				}
-			}
-		}
+	for(int i = 0; i < moi; ++i){
+		parent[i] = i;
+		birthtime[i] = dcg -> getBirthday(i, 0);
+		time_max[i] = dcg -> getBirthday(i, 0);
 	}
-	sort(columns_to_reduce.rbegin(), columns_to_reduce.rend(), BirthdayIndexInverseComparator());
 }
 
-int ColumnsToReduce::size() {
-	return columns_to_reduce.size();
+int UnionFind::find(int x){ // Thie "x" is Index.
+	int y = x, z = parent[y];
+	while (z != y) {
+		y = z;
+		z = parent[y];
+	}
+	y = parent[x];
+	while (z != y) {
+		parent[x] = z;
+		x = y;
+		y = parent[x];
+	}
+	return z;
+}
+
+void UnionFind::link(int x, int y){
+	x = find(x);
+	y = find(y);
+	if (x == y) return;
+	if (birthtime[x] > birthtime[y]){
+		parent[x] = y; 
+		birthtime[y] = min(birthtime[x], birthtime[y]);
+		time_max[y] = max(time_max[x], time_max[y]);
+	} else if(birthtime[x] < birthtime[y]) {
+		parent[y] = x;
+		birthtime[x] = min(birthtime[x], birthtime[y]);
+		time_max[x] = max(time_max[x], time_max[y]);
+	} else { //birthtime[x] == birthtime[y]
+		parent[x] = y;
+		time_max[y] = max(time_max[x], time_max[y]);
+	}
 }

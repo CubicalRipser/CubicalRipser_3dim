@@ -1,4 +1,4 @@
-/* Vertices.cpp
+/* vertices.cpp
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,7 +28,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include "Vertices.h"
+#include "vertices.h"
 
 Vertices::Vertices(){
 	dim = 0;

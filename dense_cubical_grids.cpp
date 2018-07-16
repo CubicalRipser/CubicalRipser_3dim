@@ -1,4 +1,4 @@
-/* DenseCubicalGrids.cpp
+/* dense_cubical_grids.cpp
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -33,7 +33,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <algorithm>
 #include <string>
 
-#include "DenseCubicalGrids.h"
+#include "dense_cubical_grids.h"
 
 using namespace std;
 

@@ -36,14 +36,14 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-#include "BirthdayIndex.h"
-#include "DenseCubicalGrids.h"
-#include "ColumnsToReduce.h"
-#include "SimplexCoboundaryEnumerator.h"
-#include "UnionFind.h"
-#include "WritePairs.h"
-#include "JointPairs.h"
-#include "ComputePairs.h"
+#include "birthday_index.h"
+#include "dense_cubical_grids.h"
+#include "columns_to_reduce.h"
+#include "simplex_coboundary_enumerator.h"
+#include "union_find.h"
+#include "write_pairs.h"
+#include "joint_pairs.h"
+#include "compute_pairs.h"
 
 
 enum calculation_method { LINKFIND, COMPUTEPAIRS};

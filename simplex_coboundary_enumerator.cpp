@@ -1,4 +1,4 @@
-/* SimplexCoboundaryEnumerator.cpp
+/* simplex_coboundary_enumerator.cpp
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -31,10 +31,10 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <algorithm>
 #include <vector>
 
-#include "BirthdayIndex.h"
-#include "DenseCubicalGrids.h"
-#include "ColumnsToReduce.h"
-#include "SimplexCoboundaryEnumerator.h"
+#include "birthday_index.h"
+#include "dense_cubical_grids.h"
+#include "columns_to_reduce.h"
+#include "simplex_coboundary_enumerator.h"
 
 using namespace std;
 
@@ -204,7 +204,7 @@ bool SimplexCoboundaryEnumerator::hasNextCoface() {
 		}
 		return false;
 
-		case 2: // dim2
+		default: // dim2
 		switch (vtx->type) {
 			case 0: // dim2 type0 (fix z)
 			for(int i = count; i < 2; ++i){

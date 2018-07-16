@@ -1,4 +1,4 @@
-/* DenseCubicalGrids.h
+/* compute_pairs.h
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,26 +28,35 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include <string>
-
-#include "Vertices.h"
+#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
-enum file_format { DIPHA, PERSEUS };
+template <class Key, class T> class hash_map : public std::unordered_map<Key, T> {};
 
-class DenseCubicalGrids { // file_read
+class ComputePairs
+{
 public:
-	double threshold;
-	int dim;
+	DenseCubicalGrids* dcg;
+	ColumnsToReduce* ctr;
+	hash_map<int, int> pivot_column_index;
 	int ax, ay, az;
-	double dense3[512][512][512];
-	file_format format;
+	int dim;
+	vector<WritePairs> *wp;
+	bool print;
 
-	DenseCubicalGrids(const std::string& filename, double _threshold, file_format _format);
+	ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, const bool _print);
 
-	double getBirthday(int index, int dim);
+	void compute_pairs_main();
 
-	void GetSimplexVertices(int index, int dim, Vertices* v);
+	void outputPP(int _dim, double _birth, double _death);
 
+	BirthdayIndex pop_pivot(priority_queue<BirthdayIndex, vector<BirthdayIndex>, BirthdayIndexComparator>&
+		column);
+
+	BirthdayIndex get_pivot(priority_queue<BirthdayIndex, vector<BirthdayIndex>, BirthdayIndexComparator>&
+		column);
+
+	void assemble_columns_to_reduce();
 };

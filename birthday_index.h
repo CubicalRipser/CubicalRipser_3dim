@@ -1,4 +1,4 @@
-/* ColumnsToReduce.h
+/* birthday_index.h
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,18 +28,39 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include <vector>
-
-using namespace std;
-
-class ColumnsToReduce{
+class BirthdayIndex
+{
+	
 public:
-
-	vector<BirthdayIndex> columns_to_reduce;
+	double birthday;
+	int index;
 	int dim;
-	int max_of_index;
 
-	ColumnsToReduce(DenseCubicalGrids* _dcg); 
+	BirthdayIndex();
+		
+	BirthdayIndex(double _b, int _i, int _d);
 
-	int size(); 
+	BirthdayIndex(const BirthdayIndex& b);
+
+	void copyBirthdayIndex(BirthdayIndex v);
+
+	double getBirthday();
+
+	long getIndex();
+
+	int getDimension();
+
+	void print();
+
+	void VertexPrint();
+};
+
+struct BirthdayIndexComparator
+{
+	bool operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const; 
+};
+
+struct BirthdayIndexInverseComparator
+{
+	bool operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const;	
 };

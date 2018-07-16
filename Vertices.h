@@ -1,4 +1,4 @@
-/* Vertices.h
+/* vertices.h
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,7 +28,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include "Coeff.h"
+#include "coeff.h"
 
 class Vertices
 {

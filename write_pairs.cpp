@@ -1,4 +1,4 @@
-/* BirthdayIndex.h
+/* write_pairs.cpp
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -28,39 +28,23 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-class BirthdayIndex
-{
+#include "write_pairs.h"
+
+WritePairs::WritePairs(int64_t _dim, double _birth, double _death){
+	dim = _dim;
+	birth = _birth;
+	death = _death;
+}
+
+int64_t WritePairs::getDimension(){
+	return dim;
+}
+
+double WritePairs::getBirth(){
+	return birth;
+}
+
+double WritePairs::getDeath(){
+	return death;
+}
 	
-public:
-	double birthday;
-	int index;
-	int dim;
-
-	BirthdayIndex();
-		
-	BirthdayIndex(double _b, int _i, int _d);
-
-	BirthdayIndex(const BirthdayIndex& b);
-
-	void copyBirthdayIndex(BirthdayIndex v);
-
-	double getBirthday();
-
-	long getIndex();
-
-	int getDimension();
-
-	void print();
-
-	void VertexPrint();
-};
-
-struct BirthdayIndexComparator
-{
-	bool operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const; 
-};
-
-struct BirthdayIndexInverseComparator
-{
-	bool operator()(const BirthdayIndex& o1, const BirthdayIndex& o2) const;	
-};

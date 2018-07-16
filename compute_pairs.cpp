@@ -1,4 +1,4 @@
-/* ComputePairs.cpp
+/* compute_pairs.cpp
 
 Copyright 2017-2018 Takeki Sudo and Kazushi Ahara.
 
@@ -38,14 +38,14 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-#include "BirthdayIndex.h"
-#include "DenseCubicalGrids.h"
-#include "ColumnsToReduce.h"
-#include "SimplexCoboundaryEnumerator.h"
-#include "UnionFind.h"
-#include "WritePairs.h"
-#include "JointPairs.h"
-#include "ComputePairs.h"
+#include "birthday_index.h"
+#include "dense_cubical_grids.h"
+#include "columns_to_reduce.h"
+#include "simplex_coboundary_enumerator.h"
+#include "union_find.h"
+#include "write_pairs.h"
+#include "joint_pairs.h"
+#include "compute_pairs.h"
 	
 ComputePairs::ComputePairs(DenseCubicalGrids* _dcg, ColumnsToReduce* _ctr, vector<WritePairs> &_wp, const bool _print){
 	dcg = _dcg;
@@ -147,36 +147,6 @@ void ComputePairs::compute_pairs_main(){
 		} while (true);
 	}
 }
-/*
-				for (auto e : coface_entries) { //
-					working_coboundary.push(e);
-				}
-				pivot = get_pivot(working_coboundary); 
-
-				if (pivot.getIndex() != -1) {
-					auto pair = pivot_column_index.find(pivot.getIndex());
-					if (pair != pivot_column_index.end()) {	
-						j = pair->second;
-						continue;
-					}
-				} else {// working_coboundary
-					outputPP(-1, birth, dcg -> threshold);
-					break;
-				}
-				double death = pivot.getBirthday();
-				outputPP(dim, birth, death);
-				pivot_column_index.insert(make_pair(pivot.getIndex(), i));
-				break;
-			} else {
-				double death = pivot.getBirthday();
-				outputPP(dim, birth, death);
-				pivot_column_index.insert(make_pair(pivot.getIndex(), i));
-				break;
-			}			
-
-		} while (true);
-	}
-}*/
 
 void ComputePairs::outputPP(int _dim, double _birth, double _death){
 	if(_birth != _death){
