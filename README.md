@@ -26,7 +26,7 @@ To make an exe file,
 
 To execute CubicalRipser, 
 
-    % CR3 [oprtion] [input_filename]
+    % CR3 [option] [input_filename]
 
 ## option:
 
